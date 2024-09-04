@@ -1,0 +1,9 @@
+# Ignore the Terraform provider binary
+scripts/terraform/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.71.0/windows_amd64/terraform-provider-azurerm_v3.71.0_x5.exe
+
+# Ignore the Terraform lock file
+scripts/terraform/.terraform.lock.hcl
+
+# Ignore the Terraform state file and backup
+scripts/terraform/terraform.tfstate
+scripts/terraform/terraform.tfstate.backup

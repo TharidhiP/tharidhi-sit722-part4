@@ -1,0 +1,89 @@
+#
+# To deploy:
+#
+# kubectl apply -f scripts/deployment.yml
+#
+#
+
+
+#deployment details for loading deakin-library image (book_catalog)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deakin-library
+  labels:
+    app: deakin-library
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deakin-library
+  template:
+    metadata:
+      labels:
+        app: deakin-library
+    spec:
+      containers:
+      - name: deakin-library
+        image: sit722tharidhi.azurecr.io/deakin-library:latest
+        imagePullPolicy: IfNotPresent 
+        env:
+        - name: PORT
+          value: "4000"
+        - name: DATABASE_URL
+          value: "postgresql://sit722part4_user:4G8gGGznDS7nL8I97VmTbNxL4KoepQzO@dpg-crbpgodsvqrc73f377vg-a.oregon-postgres.render.com/sit722part4"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deakin-library
+spec:
+  selector:
+    app: deakin-library
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 31000
+      targetPort: 4000
+
+
+---
+#deployment details for loading deakin-library image (book_catalog)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deakin-inventory
+  labels:
+    app: deakin-inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deakin-inventory
+  template:
+    metadata:
+      labels:
+        app: deakin-inventory
+    spec:
+      containers:
+      - name: deakin-inventory
+        image: sit722tharidhi.azurecr.io/deakin-inventory:latest
+        imagePullPolicy: IfNotPresent 
+        env:
+        - name: PORT
+          value: "5000"
+        - name: DATABASE_URL
+          value: "postgresql://sit722part4_user:4G8gGGznDS7nL8I97VmTbNxL4KoepQzO@dpg-crbpgodsvqrc73f377vg-a.oregon-postgres.render.com/sit722part4"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deakin-inventory
+spec:
+  selector:
+    app: deakin-inventory
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 32000
+      targetPort: 5000
